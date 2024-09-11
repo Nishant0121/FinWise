@@ -6,36 +6,55 @@ import LandingPage from "./pages/landing";
 import Register from "./pages/register";
 import Login from "./pages/login";
 import axios from "axios";
-import { useAppContext } from "./context";
+import { AppContext } from "./context";
 import Profile from "./pages/profile";
+import { useContext } from "react";
+import Budget from "./pages/budget";
+import Debt from "./pages/debt";
+import Education from "./pages/education";
 
 // Set Axios defaults
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
 function App() {
-  const { user, isAuthenticated } = useAppContext();
-
-  // Render a loading state while authentication is being checked
-  if (isAuthenticated === null) {
-    return <div>Loading...</div>; // Or any loading indicator you prefer
-  }
+  const { authUser } = useContext(AppContext);
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={authUser ? <Layout /> : <LandingPage />}>
+          <Route index element={<Home />} />
+        </Route>
         <Route
           path="/home"
-          element={isAuthenticated ? <Layout /> : <Navigate to="/login" />}
+          element={authUser ? <Layout /> : <Navigate to="/login" />}
         >
           <Route index element={<Home />} />
         </Route>
         <Route
           path="/profile"
-          element={isAuthenticated ? <Layout /> : <Navigate to="/login" />}
+          element={authUser ? <Layout /> : <Navigate to="/login" />}
         >
           <Route index element={<Profile />} />
+        </Route>
+        <Route
+          path="/budget"
+          element={authUser ? <Layout /> : <Navigate to="/login" />}
+        >
+          <Route index element={<Budget />} />
+        </Route>
+        <Route
+          path="/debt"
+          element={authUser ? <Layout /> : <Navigate to="/login" />}
+        >
+          <Route index element={<Debt />} />
+        </Route>
+        <Route
+          path="/education"
+          element={authUser ? <Layout /> : <Navigate to="/login" />}
+        >
+          <Route index element={<Education />} />
         </Route>
 
         <Route path="/about" element={<Layout />}>
@@ -44,7 +63,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/home" /> : <Login />}
+          element={authUser ? <Navigate to="/home" /> : <Login />}
         />
       </Routes>
     </>

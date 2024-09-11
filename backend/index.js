@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const userRoute = require("./routes/user.js");
+const budgetRoute = require("./routes/budget.js");
+const debtRoute = require("./routes/debt.js");
+const newsRoute = require("./routes/news.js");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -39,6 +42,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRoute);
+
+app.use("/api/budget", budgetRoute);
+
+app.use("/api/debt", debtRoute);
+app.use("/api/news", newsRoute);
 
 // Start the server
 app.listen(PORT, () => {
