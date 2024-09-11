@@ -59,7 +59,7 @@ export default function Profile() {
 
     try {
       const response = await axios.patch(
-        `/api/users/update/₹{user._id}`,
+        `/api/users/update/${user._id}`,
         formData
       );
 

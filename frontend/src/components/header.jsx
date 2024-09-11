@@ -22,37 +22,44 @@ export default function Header() {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex space-x-6">
-          <a href="#" className="text-gray-600 hover:text-blue-500 ">
+          <Link
+            to={"/home"}
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500 "
+          >
             Features
-          </a>
-          <a href="#" className="text-gray-600 hover:text-blue-500">
-            Pricing
-          </a>
-          <a href="#" className="text-gray-600 hover:text-blue-500">
-            About Us
-          </a>
-          <Link to={"/profile"} className="text-gray-600 hover:text-blue-500">
+          </Link>
+          <Link
+            to={"/debt"}
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+          >
+            Debt
+          </Link>
+          <Link
+            to={"/budget"}
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+          >
+            Budget
+          </Link>
+          <Link
+            to={"/profile"}
+            className="text-gray-600  focus:text-blue-500 hover:text-blue-500"
+          >
             Profile
           </Link>
-          <a href="#" className="text-gray-600 hover:text-blue-500">
-            Contact
-          </a>
+          <Link
+            to={"/education"}
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+          >
+            Education
+          </Link>
         </nav>
-
-        {/* Get Started Button */}
-        <a
-          href="#"
-          className="hidden md:block bg-cyan-500 text-white py-2 px-2 rounded-md hover:bg-cyan-600"
-        >
-          Get Started
-        </a>
 
         {/* Hamburger Menu for Mobile */}
         <div className="md:hidden">
           <button
             type="button"
             onClick={toggleMenu}
-            className="text-gray-500 hover:text-gray-600 focus:outline-none"
+            className="text-gray-500 hover:text-gray-600 focus:text-blue-500 focus:outline-none"
             aria-label="toggle menu"
           >
             <svg
@@ -80,16 +87,28 @@ export default function Header() {
             <a href="#" className="text-blue-500 border-blue-500 pb-1">
               Features
             </a>
-            <a href="#" className="text-gray-600 hover:text-blue-500">
+            <a
+              href="#"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+            >
               Pricing
             </a>
-            <a href="#" className="text-gray-600 hover:text-blue-500">
+            <a
+              href="#"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+            >
               About Us
             </a>
-            <a href="#" className="text-gray-600 hover:text-blue-500">
+            <a
+              href="#"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+            >
               Blog
             </a>
-            <Link to={"/profile"} className="text-gray-600 hover:text-blue-500">
+            <Link
+              to={"/profile"}
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+            >
               Profile
             </Link>
             <a
