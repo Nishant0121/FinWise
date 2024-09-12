@@ -22,9 +22,9 @@ const DebtInterestCalculator = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-fit bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-white">
+        <h2 className="text-2xl font-semibold text-center mb-6 text-balck">
           Debt Interest Calculator
         </h2>
         <div className="mb-4">

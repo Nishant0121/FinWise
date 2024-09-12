@@ -1,11 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Pencil } from "lucide-react";
-import AiResponse from "../components/AiResponse";
+import { LogOut, Pencil } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default function Profile() {
+  const API_KEY = "AIzaSyBxm7zzP55l_Aoqgb3I7LF-YJDURFApzrw"; // Replace with your actual API key
+  const genAI = new GoogleGenerativeAI(API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const [user, setUser] = useState({});
+  const [response, setResponse] = useState("");
   const [formData, setFormData] = useState({
     income: "",
     savings: "",
@@ -13,6 +18,7 @@ export default function Profile() {
     expenses: "",
   });
   const [financialScore, setFinancialScore] = useState(0);
+  const navigate = useNavigate();
 
   const calculateFinancialScore = (income, savings, debt, expenses) => {
     let score = 0;
@@ -49,6 +55,30 @@ export default function Profile() {
     setFinancialScore(score);
   }, []);
 
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const run = async function (p) {
+      try {
+        const refinedPrompt = p;
+        const result = await model.generateContent(refinedPrompt);
+        const response = result.response;
+        const text = response.text();
+        setResponse(text);
+      } catch (error) {
+        console.error("Error in run function:", error);
+        // Handle the error appropriately (e.g., return a default value or show an error message)
+        return "An error occurred while generating content.";
+      }
+    };
+    run(
+      `{response should be point wise and of 70 words generate a financial advice for me based on my income
+        ${userData.income},saving
+        ${userData.savings}, debts
+        ${userData.debts} ,expenses
+        ${userData.expenses}}`
+    );
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -82,14 +112,30 @@ export default function Profile() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+    window.location.reload();
+  };
+  console.log(response);
+
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-2 md:p-6 bg-gray-100 min-h-screen">
       <article className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <section className="bg-white shadow-lg rounded-lg p-6">
-          <div className="bg-blue-500 text-white rounded-md p-4 space-y-2">
-            <p className="font-semibold">Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-            <p>Contact No: {user.mobileNo}</p>
+        <section className="bg-white shadow-lg rounded-lg p-2 md:p-6">
+          <div className="bg-blue-500 relative text-white rounded-md p-4">
+            <div>
+              <p className="font-semibold">Name: {user.name}</p>
+              <p>Email: {user.email}</p>
+              <p>Contact No: {user.mobileNo}</p>
+            </div>
+
+            <div
+              className="px-1 m-2 py-1 w-fit absolute top-0 right-0 text-red-600 bg-white rounded-md shadow-md hover:bg-blue-100"
+              onClick={handleLogout}
+            >
+              <LogOut />
+            </div>
           </div>
           <div className="border-t border-gray-300 my-4"></div>
           <div className="bg-blue-400 text-white flex items-start justify-between rounded-md p-4">
@@ -100,7 +146,7 @@ export default function Profile() {
               <p>Debts: {user.debts}</p>
             </div>
             <button
-              className="px-3 py-1 text-blue-600 bg-white rounded-md shadow-md hover:bg-blue-100"
+              className="px-1 py-1 text-blue-600 bg-white rounded-md shadow-md hover:bg-blue-100"
               onClick={() => document.getElementById("edit_info").showModal()}
             >
               <Pencil />
@@ -113,7 +159,7 @@ export default function Profile() {
           </div>
         </section>
 
-        <section className="bg-white shadow-lg rounded-lg p-6">
+        <section className="bg-white shadow-lg rounded-lg p-2 md:p-6">
           <p className="text-lg font-semibold text-gray-700">
             Your Financial Score
           </p>
@@ -133,17 +179,13 @@ export default function Profile() {
           </p>
         </section>
 
-        <section className="bg-white shadow-lg rounded-lg p-6">
-          <pre className=" overflow-x-auto">
-            <AiResponse
-              prompt={`The respponse Should be point wise and atmost 70 words.Give budigeting tips and saving plans for ₹{user.name} who has an income of ₹{user.income} and expenses of ₹{user.expenses} and debt of ₹{user.debts} and savings of ₹{user.savings} and financial score of ₹{financialScore} . `}
-            />
-          </pre>
+        <section className="bg-white shadow-lg rounded-lg p-2 md:p-6">
+          <pre className=" overflow-x-auto">{response}</pre>
         </section>
       </article>
 
       <dialog id="edit_info" className="modal">
-        <div className="modal-box bg-white text-black rounded-lg p-6">
+        <div className="modal-box bg-white text-black rounded-lg p-2 md:p-6">
           <h3 className="font-bold text-lg mb-4">Edit User Info</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

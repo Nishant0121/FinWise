@@ -49,11 +49,11 @@ export default function Budget() {
   }, [authUser]); // Re-run the effect when `authUser` changes
 
   useEffect(() => {
-    // Create or update the chart whenever `submittedBudget` changes
+    // Create or update the chart whenever `submittedBudget` or `allBudget` changes
     if (submittedBudget && chartRef.current) {
-      // Get only the latest two budgets
-      const latestTwoBudgets = allBudget.slice(0, 2);
-      createChart(latestTwoBudgets);
+      // Get only the last three budgets
+      const latestThreeBudgets = allBudget.slice(-3); // Get last 3 budgets
+      createChart(latestThreeBudgets);
     }
 
     // Cleanup function to destroy the chart when the component unmounts
@@ -63,7 +63,7 @@ export default function Budget() {
         chartInstance.current = null;
       }
     };
-  }, [submittedBudget]); // Only run when `submittedBudget` changes
+  }, [submittedBudget, allBudget]); // Re-run when `submittedBudget` or `allBudget` changes
 
   // Handle form input change
   const handleChange = (e) => {
@@ -92,6 +92,17 @@ export default function Budget() {
         userId: authUser._id, // Ensure the correct userId is sent here too
       });
       setAllBudget(updatedBudgets.data);
+      setBudget({
+        userId: "",
+        income: "",
+        food: "",
+        rent: "",
+        entertainment: "",
+        utilities: "",
+        transportation: "",
+        savings: "",
+        miscellaneous: "",
+      });
     } catch (error) {
       console.error("There was an error submitting the budget!", error);
     }
@@ -107,7 +118,9 @@ export default function Budget() {
     const ctx = chartRef.current.getContext("2d");
 
     // Extract income and total expenses from each budget
-    const labels = budgets.map((budget, index) => `Budget ${index + 1}`);
+    const labels = budgets.map((budget) =>
+      new Date(budget.date).toLocaleDateString()
+    ); // Return formatted date strings
     const incomeData = budgets.map((budget) => budget.income);
     const totalExpensesData = budgets.map((budget) => budget.totalExpenses);
 
@@ -183,7 +196,7 @@ export default function Budget() {
                 {submittedBudget.totalExpenses}
               </p>
             </div>
-            <div className="w-full h-64">
+            <div className="w-full h-64 mt-3">
               <canvas
                 ref={chartRef}
                 id="myChart"
@@ -192,15 +205,15 @@ export default function Budget() {
             </div>
           </div>
         ) : (
-          <div className="p-6 bg-white shadow-md rounded-md">
+          <div className="p-6  bg-white shadow-md rounded-md">
             <h2 className="text-xl font-bold mb-4">Current Budget Details</h2>
             <div className="space-y-2">
-              <p>No budget data available.</p>
+              <p>No budget set till now.</p>
             </div>
           </div>
         )}
         {/* Form to take budget input */}
-        <div className="p-6 bg-white shadow-md rounded-md">
+        <div className="p-2 md:p-6  bg-white shadow-md rounded-md">
           <h2 className="text-xl font-bold mb-4">Enter Your Budget Details</h2>
           <form onSubmit={handleSubmit}>
             {/* Form fields */}

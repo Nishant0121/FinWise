@@ -7,6 +7,7 @@ const userRoute = require("./routes/user.js");
 const budgetRoute = require("./routes/budget.js");
 const debtRoute = require("./routes/debt.js");
 const newsRoute = require("./routes/news.js");
+const notifyRoute = require("./routes/notification.js");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -47,6 +48,7 @@ app.use("/api/budget", budgetRoute);
 
 app.use("/api/debt", debtRoute);
 app.use("/api/news", newsRoute);
+app.use("/api/notify", notifyRoute);
 
 // Start the server
 app.listen(PORT, () => {

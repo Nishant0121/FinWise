@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import DebtInterestCalculator from "../components/debtmanagement.jsx";
-import { X } from "lucide-react";
+import { Calculator, X } from "lucide-react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -48,6 +48,7 @@ export default function Debt() {
       });
       toast.success("Debt added successfully!");
       console.log(response.data);
+      window.location.reload();
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "An error occurred");
@@ -86,7 +87,7 @@ export default function Debt() {
   };
 
   return (
-    <div className="relative max-w-[1200px] min-h-[90vh] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg shadow-md bg-white">
+    <div className="relative max-w-[1200px] min-h-[90vh] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 p-2 md:p-4 border rounded-lg shadow-md bg-white">
       <form onSubmit={handleSubmit} className="col-span-1">
         <div className="mb-4">
           <label
@@ -100,7 +101,7 @@ export default function Debt() {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 block p-4 text-black w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block p-4 text-white w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             required
           />
         </div>
@@ -117,7 +118,7 @@ export default function Debt() {
             id="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="mt-1 block p-4 text-black w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block p-4 text-white w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             step="0.01"
             required
           />
@@ -135,7 +136,7 @@ export default function Debt() {
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className="mt-1 block p-4 text-black w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block p-4 text-white w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             required
           />
         </div>
@@ -158,18 +159,18 @@ export default function Debt() {
       </div>
 
       <button
-        className="btn absolute right-4 bottom-4"
+        className="btn p-2 md:p-4 absolute right-0 bottom-0"
         onClick={() =>
           document.getElementById("DebtInterestCalculator").showModal()
         }
       >
-        Intrest Calculator
+        <Calculator />
       </button>
       <dialog
         id="DebtInterestCalculator"
         className="modal modal-bottom sm:modal-middle"
       >
-        <div className="modal-box bg-white">
+        <div className="modal-box relative bg-white">
           <DebtInterestCalculator />
           <div className="modal-action">
             <form method="dialog">

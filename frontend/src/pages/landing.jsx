@@ -20,32 +20,6 @@ export default function LandingPage() {
           <BarChart2 className="h-6 w-6" />
           <span className="sr-only">FinTech Pro</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Features
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Pricing
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            About
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Contact
-          </Link>
-        </nav>
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-blue-600 to-indigo-600">
@@ -136,10 +110,13 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="w-full flex items-center justify-center max-w-sm space-y-2">
-                <button className="bg-white px-3 py-2 flex items-center justify-center rounded-md text-blue-600 hover:bg-gray-100">
+                <Link
+                  to={"/login"}
+                  className="bg-white px-3 py-2 flex items-center justify-center rounded-md text-blue-600 hover:bg-gray-100"
+                >
                   Sign Up Now
                   <ChevronRight className="ml-2 h-4 w-4" />
-                </button>
+                </Link>
               </div>
             </div>
           </div>

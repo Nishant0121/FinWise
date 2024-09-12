@@ -1,6 +1,9 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -13,6 +16,7 @@ export default function Register() {
     debts: "",
     savings: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +33,7 @@ export default function Register() {
       const response = await axios.post("/api/users/register", formData);
       console.log("Registration successful:", response.data);
       toast.success("Registration successful");
+      navigate("/login");
     } catch (error) {
       console.error(
         "Error registering user:",
@@ -155,6 +160,15 @@ export default function Register() {
             Register
           </button>
         </form>
+        <p className="text-center mt-4">
+          Already have an account?{" "}
+          <Link
+            to={"/login"}
+            className="text-blue-500 hover:text-blue-700 font-semibold"
+          >
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );

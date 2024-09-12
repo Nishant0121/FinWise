@@ -12,6 +12,7 @@ import { useContext } from "react";
 import Budget from "./pages/budget";
 import Debt from "./pages/debt";
 import Education from "./pages/education";
+import Analytics from "./pages/analytics";
 
 // Set Axios defaults
 axios.defaults.baseURL = "http://localhost:4000";
@@ -55,6 +56,12 @@ function App() {
           element={authUser ? <Layout /> : <Navigate to="/login" />}
         >
           <Route index element={<Education />} />
+        </Route>
+        <Route
+          path="/analytics"
+          element={authUser ? <Layout /> : <Navigate to="/login" />}
+        >
+          <Route index element={<Analytics />} />
         </Route>
 
         <Route path="/about" element={<Layout />}>

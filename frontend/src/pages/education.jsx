@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FinanceLearningGuide from "../components/financeLearning";
+import Loader from "../components/loader.jsx";
 
 export default function Education() {
   const [news, setNews] = useState([]);
@@ -59,7 +60,11 @@ export default function Education() {
   };
 
   if (!news || !response) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   return (

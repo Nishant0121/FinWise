@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <div>Footer</div>;
+  return (
+    <footer className="bg-gray-900 text-gray-400 py-4 text-center">
+      <p>&copy; 2024 FinWise. All rights reserved.</p>
+    </footer>
+  );
 }

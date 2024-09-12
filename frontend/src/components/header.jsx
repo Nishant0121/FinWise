@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { FaJetFighterUp } from "react-icons/fa6";
-import { useAppContext } from "../context";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logout } = useAppContext();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -20,37 +25,43 @@ export default function Header() {
           <span className="text-xl font-bold">FinWise</span>
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation Links for Desktop */}
         <nav className="hidden md:flex space-x-6">
           <Link
-            to={"/home"}
-            className="text-gray-600 focus:text-blue-500 hover:text-blue-500 "
+            to="/home"
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
           >
             Features
           </Link>
           <Link
-            to={"/debt"}
+            to="/debt"
             className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
           >
             Debt
           </Link>
           <Link
-            to={"/budget"}
+            to="/budget"
             className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
           >
             Budget
           </Link>
           <Link
-            to={"/profile"}
-            className="text-gray-600  focus:text-blue-500 hover:text-blue-500"
+            to="/profile"
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
           >
             Profile
           </Link>
           <Link
-            to={"/education"}
+            to="/education"
             className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
           >
             Education
+          </Link>
+          <Link
+            to="/analytics"
+            className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+          >
+            Analytics
           </Link>
         </nav>
 
@@ -84,39 +95,54 @@ export default function Header() {
       {isMenuOpen && (
         <div className="absolute top-[45px] left-0 w-full bg-white shadow-md z-50">
           <nav className="flex flex-col items-center py-4 space-y-4">
-            <a href="#" className="text-blue-500 border-blue-500 pb-1">
-              Features
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
-            >
-              Pricing
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
-            >
-              About Us
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
-            >
-              Blog
-            </a>
             <Link
-              to={"/profile"}
+              to="/home"
               className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+              onClick={toggleMenu} // Close menu on link click
+            >
+              Features
+            </Link>
+            <Link
+              to="/debt"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+              onClick={toggleMenu}
+            >
+              Debt
+            </Link>
+            <Link
+              to="/budget"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+              onClick={toggleMenu}
+            >
+              Budget
+            </Link>
+            <Link
+              to="/profile"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+              onClick={toggleMenu}
             >
               Profile
             </Link>
-            <a
-              href="#"
-              className="bg-cyan-500 text-white py-2 px-2 rounded-md hover:bg-cyan-600"
+            <Link
+              to="/education"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+              onClick={toggleMenu}
             >
-              Get Started
-            </a>
+              Education
+            </Link>
+            <Link
+              to="/analytics"
+              className="text-gray-600 focus:text-blue-500 hover:text-blue-500"
+              onClick={toggleMenu}
+            >
+              Analytics
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="bg-cyan-500 text-white py-2 px-4 rounded-md hover:bg-cyan-600"
+            >
+              Logout
+            </button>
           </nav>
         </div>
       )}
