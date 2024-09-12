@@ -4,9 +4,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import LoaderFit from "../components/loaderfit";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -25,11 +27,13 @@ export default function Login() {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const response = await axios.post("/api/users/login", formData);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       const { token } = response.data;
       Cookies.set("token", token, { expires: 1 / 24 });
       console.log("Login successful:", response.data);
+      setLoading(false);
       toast.success("Login successful");
       navigate("/home");
       window.location.reload();
@@ -45,7 +49,9 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-[500px] bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-blue-600 text-center">
+          Login
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
@@ -57,7 +63,7 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full px-3 text-white py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -70,7 +76,7 @@ export default function Login() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full text-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
           <button
@@ -80,6 +86,7 @@ export default function Login() {
             Login
           </button>
         </form>
+        {loading && <LoaderFit />}
         <p className="text-center mt-4">
           Don't have an account?{" "}
           <Link

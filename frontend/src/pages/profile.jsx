@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { LogOut, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Loader from "../components/loader.jsx";
+import LoaderFit from "../components/loaderfit.jsx";
 
 export default function Profile() {
   const API_KEY = "AIzaSyBxm7zzP55l_Aoqgb3I7LF-YJDURFApzrw"; // Replace with your actual API key
@@ -179,8 +181,10 @@ export default function Profile() {
           </p>
         </section>
 
-        <section className="bg-white shadow-lg rounded-lg p-2 md:p-6">
-          <pre className=" overflow-x-auto">{response}</pre>
+        <section className="bg-white shadow-lg rounded-lg  p-2 md:p-6">
+          <pre className=" overflow-x-auto">
+            {response ? response : <LoaderFit />}
+          </pre>
         </section>
       </article>
 
