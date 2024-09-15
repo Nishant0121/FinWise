@@ -35,7 +35,7 @@ export default function Login() {
       console.log("Login successful:", response.data);
       setLoading(false);
       toast.success("Login successful");
-      navigate("/home");
+      navigate("/");
       window.location.reload();
     } catch (error) {
       console.error(
