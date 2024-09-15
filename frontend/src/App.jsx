@@ -17,7 +17,6 @@ import Analytics from "./pages/analytics";
 // Set Axios defaults
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
-require("dotenv").config();
 
 function App() {
   const { authUser } = useContext(AppContext);
