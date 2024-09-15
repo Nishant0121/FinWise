@@ -17,10 +17,19 @@ export default function Education() {
 
   const run = async function (p) {
     const refinedPrompt = p;
-    const result = await model.generateContent(refinedPrompt);
-    const response = result.response;
-    const text = response.text();
-    setResponse(text);
+    try {
+      const result = await model.generateContent(refinedPrompt);
+      const response = result.response;
+      const text = response.text();
+
+      // Remove markdown-style syntax like "##" and "**" from the response
+      const cleanText = text.replace(/##|(\*\*)/g, "");
+
+      setResponse(cleanText); // Set the cleaned response
+    } catch (error) {
+      console.error("Error generating response:", error);
+      setResponse("Error generating response. Please try again later.");
+    }
   };
 
   useEffect(() => {
@@ -69,10 +78,10 @@ export default function Education() {
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <pre className=" overflow-x-auto max-w-[90vw] mx-auto font-sans bg-blue-200 p-3 rounded-lg ">
-        {response ? response : "Loading ?"}
+      <pre className=" overflow-x-auto max-w-[90vw] mx-auto font-sans scroll-hide bg-blue-200 p-3 rounded-lg ">
+        {response ? response : "Loading..."}
       </pre>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mt-6 mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8">
           Latest Finance News
         </h1>

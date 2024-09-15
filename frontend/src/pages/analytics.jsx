@@ -75,7 +75,7 @@ export default function Analytics() {
         label: "Total Expenses",
         data: last10Budgets.map((budget) => budget.totalExpenses),
         borderColor: "rgba(255, 99, 132, 1)",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        backgroundColor: "rgba(255, 99, 132, 1)",
         fill: true,
       },
     ],
@@ -132,26 +132,31 @@ export default function Analytics() {
         label: "Savings",
         data: last10Budgets.map((budget) => budget.savings),
         borderColor: "rgba(54, 162, 235, 1)",
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        backgroundColor: "rgba(54, 162, 235, 0.9)",
         fill: true,
       },
     ],
   };
 
   return (
-    <div className="grid grid-cols-1 max-w-[60vw] mx-auto gap-4">
+    <div className="grid grid-cols-1 max-w-[60vw] mt-4 mx-auto gap-4">
       <div>
-        <h2>Income vs Expenses Over Time (Last 10 Entries)</h2>
+        <h2 className=" font-bold text-xl">
+          Income vs Expenses Over Time (Last 10 Entries)
+        </h2>
         <Line data={incomeVsExpenseData} />
       </div>
-
       <div className="max-h-[100vh] mx-auto">
-        <h2>Category-wise Spending (Most Recent Budget)</h2>
+        <h2 className=" font-bold text-xl">
+          Category-wise Spending (Most Recent Budget)
+        </h2>
         <Pie data={categoryWiseSpendingData} />
       </div>
 
       <div>
-        <h2>Savings Over Time (Last 10 Entries)</h2>
+        <h2 className=" font-bold text-xl">
+          Savings Over Time (Last 10 Entries)
+        </h2>
         <Bar data={savingsOverTimeData} />
       </div>
     </div>

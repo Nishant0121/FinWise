@@ -11,13 +11,13 @@ export default function Home() {
       {/* Header Section */}
 
       {/* Hero Section */}
-      <div className="relative flex items-center justify-center min-h-screen bg-opacity-80">
+      <div className="relative flex items-center rounded-lg justify-center min-h-screen bg-opacity-80">
         <img
           src={background}
           alt="FinTech Background"
-          className="absolute top-0 left-0 w-full h-full object-cover opacity-50"
+          className="absolute top-0 left-0 w-full h-full object-cover rounded-lg opacity-50"
         />
-        <div className="relative z-10 text-center text-white">
+        <div className="relative z-10 text-center rounded-lg text-white">
           <h1 className="text-5xl font-bold mb-4">
             Manage Your Finances Smartly with FinWise
           </h1>

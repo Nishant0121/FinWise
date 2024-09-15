@@ -1,4 +1,6 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState } from "react";
+import LoaderFit from "./loaderfit";
 
 const DebtInterestCalculator = () => {
   const [debtAmount, setDebtAmount] = useState("");
@@ -6,8 +8,21 @@ const DebtInterestCalculator = () => {
   const [loanTerm, setLoanTerm] = useState("");
   const [totalInterest, setTotalInterest] = useState(null);
   const [repayment, setRepayment] = useState(null);
+  const [suggestions, setSuggestions] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state
+  const API_KEY = "AIzaSyBxm7zzP55l_Aoqgb3I7LF-YJDURFApzrw"; // Replace with your actual API key
+  const genAI = new GoogleGenerativeAI(API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const calculateInterest = () => {
+  const hardcodedSuggestions = [
+    "Make extra payments whenever possible to reduce the principal.",
+    "Consider refinancing to get a lower interest rate.",
+    "Set up automatic payments to avoid missed or late payments.",
+    "Prioritize paying off high-interest loans first.",
+    "Look for ways to cut unnecessary expenses and allocate more money toward debt repayment.",
+  ];
+
+  const calculateInterest = async () => {
     const principal = parseFloat(debtAmount);
     const rate = parseFloat(interestRate) / 100;
     const term = parseFloat(loanTerm);
@@ -18,18 +33,47 @@ const DebtInterestCalculator = () => {
       const monthlyPayment = totalAmount / (term * 12);
       setTotalInterest(interest.toFixed(2));
       setRepayment(monthlyPayment.toFixed(2));
+
+      // Set loading state to true before fetching suggestions
+      setLoading(true);
+
+      try {
+        // Validate input values
+        if (principal <= 0 || rate < 0 || term <= 0) {
+          throw new Error(
+            "Invalid input: Please enter positive values for principal, rate, and term."
+          );
+        }
+
+        // Make a request to the Gemini AI model for suggestions
+        const response = await model.generateContent({
+          prompt: `Provide repayment strategies for a loan with a principal of ₹${principal}, an interest rate of ${
+            rate * 100
+          }%, and a term of ${term} years.`,
+        });
+
+        // Set the AI-generated suggestions
+        setSuggestions(response.response.text);
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        // If an error occurs, set the hardcoded suggestions
+        setSuggestions(hardcodedSuggestions.join("\n"));
+      } finally {
+        // Set loading state to false after the request is complete
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-fit bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-balck">
+    <div className="flex justify-center items-center w-full h-fit bg-gray-100">
+      <div className="w-full max-w-md p-4 bg-white shadow-lg rounded-lg">
+        <h2 className="text-2xl font-semibold text-center mb-6 text-black">
           Debt Interest Calculator
         </h2>
         <div className="mb-4">
           <label
-            className="block text-sm font-medium text-white mb-2"
+            className="block text-sm text-blue-700 font-bold mb-2"
             htmlFor="debtAmount"
           >
             Debt Amount (₹)
@@ -45,7 +89,7 @@ const DebtInterestCalculator = () => {
         </div>
         <div className="mb-4">
           <label
-            className="block text-sm font-medium text-white mb-2"
+            className="block text-sm text-blue-700 font-bold mb-2"
             htmlFor="interestRate"
           >
             Interest Rate (%)
@@ -61,7 +105,7 @@ const DebtInterestCalculator = () => {
         </div>
         <div className="mb-4">
           <label
-            className="block text-sm font-medium text-white mb-2"
+            className="block text-sm text-blue-700 font-bold mb-2"
             htmlFor="loanTerm"
           >
             Loan Term (Years)
@@ -82,7 +126,13 @@ const DebtInterestCalculator = () => {
           Calculate
         </button>
 
-        {totalInterest !== null && repayment !== null && (
+        {loading && (
+          <div className="mt-6 p-4 bg-indigo-50 rounded-lg text-center">
+            <LoaderFit />
+          </div>
+        )}
+
+        {totalInterest !== null && repayment !== null && !loading && (
           <div className="mt-6 p-4 bg-indigo-50 rounded-lg">
             <h3 className="text-lg font-semibold text-indigo-700">
               Calculation Results
@@ -99,14 +149,12 @@ const DebtInterestCalculator = () => {
                 Suggested Repayment Strategy:
               </h4>
               <ul className="list-disc list-inside text-gray-600 mt-2">
-                <li>
-                  Try to make extra payments to reduce the interest over time.
-                </li>
-                <li>Consider refinancing if the interest rate is high.</li>
-                <li>
-                  Ensure that monthly payments are affordable to avoid
-                  penalties.
-                </li>
+                {suggestions &&
+                  suggestions
+                    .split("\n")
+                    .map((suggestion, index) => (
+                      <li key={index}>{suggestion}</li>
+                    ))}
               </ul>
             </div>
           </div>

@@ -159,7 +159,7 @@ export default function Debt() {
       </div>
 
       <button
-        className="btn p-2 md:p-4 absolute right-0 bottom-0"
+        className="btn p-2 m-2 absolute right-0 bottom-0"
         onClick={() =>
           document.getElementById("DebtInterestCalculator").showModal()
         }
@@ -170,7 +170,7 @@ export default function Debt() {
         id="DebtInterestCalculator"
         className="modal modal-bottom sm:modal-middle"
       >
-        <div className="modal-box relative bg-white">
+        <div className="modal-box relative scroll-hide bg-white">
           <DebtInterestCalculator />
           <div className="modal-action">
             <form method="dialog">

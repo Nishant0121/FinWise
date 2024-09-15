@@ -4,11 +4,10 @@ import toast from "react-hot-toast";
 import { LogOut, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Loader from "../components/loader.jsx";
 import LoaderFit from "../components/loaderfit.jsx";
 
 export default function Profile() {
-  const API_KEY = "AIzaSyBxm7zzP55l_Aoqgb3I7LF-YJDURFApzrw"; // Replace with your actual API key
+  const API_KEY = "AIzaSyBxm7zzP55l_Aoqgb3I7LF - YJDURFApzrw";
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const [user, setUser] = useState({});
@@ -65,7 +64,8 @@ export default function Profile() {
         const result = await model.generateContent(refinedPrompt);
         const response = result.response;
         const text = response.text();
-        setResponse(text);
+        const cleanText = text.replace(/##|(\*\*)/g, "");
+        setResponse(cleanText);
       } catch (error) {
         console.error("Error in run function:", error);
         // Handle the error appropriately (e.g., return a default value or show an error message)
@@ -155,7 +155,7 @@ export default function Profile() {
             </button>
           </div>
           <div className="border-t border-gray-300 my-4"></div>
-          <div className="bg-blue-300 text-white rounded-md p-4">
+          <div className="bg-blue-300 text-black rounded-md p-4">
             <p>User Since: {user.createdAt}</p>
             <p>Financial Score: {financialScore}</p>
           </div>
@@ -180,13 +180,12 @@ export default function Profile() {
             <span className="text-blue-500">{financialScore}</span>
           </p>
         </section>
-
-        <section className="bg-white shadow-lg rounded-lg  p-2 md:p-6">
-          <pre className=" overflow-x-auto">
-            {response ? response : <LoaderFit />}
-          </pre>
-        </section>
       </article>
+      <section className="bg-white shadow-lg rounded-lg w-full space-y-6 mt-6 p-2 md:p-6">
+        <pre className=" overflow-x-auto">
+          {response ? response : <LoaderFit />}
+        </pre>
+      </section>
 
       <dialog id="edit_info" className="modal">
         <div className="modal-box bg-white text-black rounded-lg p-2 md:p-6">
