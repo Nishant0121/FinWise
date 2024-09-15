@@ -15,7 +15,7 @@ import Education from "./pages/education";
 import Analytics from "./pages/analytics";
 
 // Set Axios defaults
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "https://finwise-9owx.onrender.com";
 axios.defaults.withCredentials = true;
 
 function App() {
